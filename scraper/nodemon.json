@@ -1,0 +1,7 @@
+{
+  "restartable": "rs",
+  "watch": ["."],
+  "ignore": ["node_modules", "dist"],
+  "ext": "js,json,ts",
+  "exec": "npm run build && npm run start"
+}
