@@ -23,6 +23,7 @@ app.services = {
 
 app.use(requestLoggerMiddleware());
 app.use('/store', storeRouter);
+
 app.listen(port, () => {
   console.log(`server started at http://localhost:${port}`);
 });
