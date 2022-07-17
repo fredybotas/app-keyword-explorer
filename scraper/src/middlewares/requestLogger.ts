@@ -5,6 +5,9 @@ import log4js from 'log4js';
 export function middleware(): RequestHandler {
   return log4js.connectLogger(getLogger('HTTP'), {
     level: LogLevel.INFO,
-    statusRules: [{ from: 500, to: 599, level: LogLevel.ERROR }],
+    statusRules: [
+      { from: 200, to: 499, level: LogLevel.INFO },
+      { from: 500, to: 599, level: LogLevel.ERROR },
+    ],
   });
 }

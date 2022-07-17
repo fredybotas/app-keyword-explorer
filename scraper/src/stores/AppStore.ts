@@ -14,8 +14,11 @@ export class AppleAppStore implements Store {
         appId: appData.appId,
         description: appData.description,
       };
-    } catch (message: any) {
-      throw new Error(message);
+    } catch (err: any) {
+      if (err.message === 'App not found (404)') {
+        return null;
+      }
+      throw new Error(err.message);
     }
   }
 

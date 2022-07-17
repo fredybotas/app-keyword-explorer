@@ -12,7 +12,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "app-store-scraper": "^0.17.0",
+    "ajv": "^8.11.0",
+    "app-store-scraper": "github:facundoolano/app-store-scraper",
     "express": "^4.18.1",
     "log4js": "^6.6.0"
   },

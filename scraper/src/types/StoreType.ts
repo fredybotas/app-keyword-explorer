@@ -1,4 +1,4 @@
-export const enum StoreType {
-  appStore = "appstore",
-  playStore = "playstore",
+export enum StoreType {
+  appStore = 'appstore',
+  playStore = 'playstore',
 }
