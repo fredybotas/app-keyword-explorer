@@ -3,6 +3,6 @@ import { StoreType } from '../../types/StoreType';
 
 export interface GetSearchResultRequest {
   query: string;
-  store: StoreCountry;
+  store?: StoreCountry;
   storeType: StoreType;
 }

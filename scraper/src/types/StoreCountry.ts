@@ -1,5 +1,5 @@
-export const enum StoreCountry {
-  sk = "sk",
-  us = "us",
-  gb = "gb",
+export enum StoreCountry {
+  sk = 'sk',
+  us = 'us',
+  gb = 'gb',
 }

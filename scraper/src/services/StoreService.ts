@@ -5,6 +5,7 @@ import { GetAppDataRequest } from '../validation/types/GetAppDataRequest';
 import { GetSuggestionsRequest } from '../validation/types/GetSuggestionsRequest';
 import { GetSearchResultRequest } from '../validation/types/GetSearchResultRequest';
 import { getLogger } from '../utils/logger';
+import { StoreCountry } from '../types/StoreCountry';
 
 export type Stores = {
   // eslint-disable-next-line no-unused-vars
@@ -42,6 +43,6 @@ export class StoreService {
   }
 
   async getSearchResult(request: GetSearchResultRequest): Promise<App[]> {
-    return this.stores[request.storeType].getSearchResult(request.store, request.query);
+    return this.stores[request.storeType].getSearchResult(request.store ?? StoreCountry.us, request.query);
   }
 }
