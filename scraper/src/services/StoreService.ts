@@ -14,6 +14,7 @@ export type Stores = {
 
 export enum StoreError {
   APP_NOT_FOUND = 'app_not_found',
+  APP_NOT_RANKED = 'app_not_ranked',
 }
 
 const LOGGER = getLogger();
@@ -44,5 +45,14 @@ export class StoreService {
 
   async getSearchResult(request: GetSearchResultRequest): Promise<App[]> {
     return this.stores[request.storeType].getSearchResult(request.store ?? StoreCountry.us, request.query);
+  }
+
+  async getAppRanking(id: number, query: string, store: StoreType, country: StoreCountry): Promise<number> {
+    const searchResults = await this.getSearchResult({ query: query, storeType: store, store: country });
+    const ranking = searchResults.findIndex((app) => app.id === id);
+    if (ranking === -1) {
+      throw new Error(StoreError.APP_NOT_RANKED);
+    }
+    return ranking + 1;
   }
 }

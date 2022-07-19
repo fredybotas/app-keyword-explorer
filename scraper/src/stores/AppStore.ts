@@ -36,6 +36,8 @@ export class AppleAppStore implements Store {
       const searchResult = await this.client.search({
         term: query,
         country: store,
+        num: 200,
+        idsOnly: false,
       });
       return searchResult.map((app: any) => {
         return {
