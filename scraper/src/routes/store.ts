@@ -1,15 +1,11 @@
 import { Router } from 'express';
 import { HttpError } from '../utils/errors/HttpError';
 import { middleware as validate } from '../middlewares/validator';
-import { schema as GetAppRequestSchema } from '../validation/schemas/GetAppDataRequestSchema';
-import { schema as GetSuggestionsRequestSchema } from '../validation/schemas/GetSuggestionsRequestSchema';
-import { schema as GetSearchResultRequestSchema } from '../validation/schemas/GetSearchResultRequestSchema';
+import { GetAppRequestSchema, GetSuggestionsRequestSchema, GetSearchResultRequestSchema } from '../validation/schemas';
+import { GetAppDataRequest, GetSuggestionsRequest, GetSearchResultRequest } from '../validation/types/';
 
-import { GetAppDataRequest } from '../validation/types/GetAppDataRequest';
 import { StoreError } from '../services/StoreService';
 import { getLogger } from '../utils/logger';
-import { GetSuggestionsRequest } from '../validation/types/GetSuggestionsRequest';
-import { GetSearchResultRequest } from '../validation/types/GetSearchResultRequest';
 
 export const router = Router();
 const LOGGER = getLogger();

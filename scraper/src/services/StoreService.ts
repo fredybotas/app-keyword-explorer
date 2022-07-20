@@ -1,9 +1,7 @@
 import { Store } from '../stores/Store';
 import { StoreType } from '../types/StoreType';
 import { App, AppIdentifier } from '../types/App';
-import { GetAppDataRequest } from '../validation/types/GetAppDataRequest';
-import { GetSuggestionsRequest } from '../validation/types/GetSuggestionsRequest';
-import { GetSearchResultRequest } from '../validation/types/GetSearchResultRequest';
+import { GetSuggestionsRequest, GetSearchResultRequest, GetAppDataRequest } from '../validation/types';
 import { getLogger } from '../utils/logger';
 import { StoreCountry } from '../types/StoreCountry';
 
