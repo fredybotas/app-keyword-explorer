@@ -18,6 +18,7 @@ export type Stores = {
 export enum StoreError {
   APP_NOT_FOUND = 'app_not_found',
   APP_NOT_RANKED = 'app_not_ranked',
+  STORE_FETCH_ERROR = 'store_fetch_error',
 }
 
 const LOGGER = getLogger();
@@ -25,10 +26,14 @@ export class StoreService {
   constructor(private readonly stores: Stores) {}
 
   private async getSearchResultInternal(request: GetSearchResultRequest): Promise<AppIdentifier[]> {
-    return this.stores[request.storeType].getSearchResult(request.storeCountry ?? StoreCountry.us, request.query);
+    try {
+      return this.stores[request.storeType].getSearchResult(request.storeCountry ?? StoreCountry.us, request.query);
+    } catch (err: any) {
+      throw new Error(StoreError.STORE_FETCH_ERROR);
+    }
   }
 
-  async getApp(request: GetAppDataRequest): Promise<App> {
+  private async getAppInternal(request: GetAppDataRequest): Promise<App> {
     try {
       const app = await this.stores[request.storeType].getApp(request.id);
       if (!app) {
@@ -40,13 +45,21 @@ export class StoreService {
         case StoreError.APP_NOT_FOUND:
           throw err;
         default:
-          throw err;
+          throw new Error(StoreError.STORE_FETCH_ERROR);
       }
     }
   }
 
+  async getApp(request: GetAppDataRequest): Promise<App> {
+    return this.getAppInternal(request);
+  }
+
   async getSuggestions(request: GetSuggestionsRequest): Promise<string[]> {
-    return this.stores[request.storeType].getSuggestions(request.query);
+    try {
+      return this.stores[request.storeType].getSuggestions(request.query);
+    } catch (err: any) {
+      throw new Error(StoreError.STORE_FETCH_ERROR);
+    }
   }
 
   async getSearchResult(request: GetSearchResultRequest): Promise<App[]> {
