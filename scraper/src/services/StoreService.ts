@@ -7,11 +7,9 @@ import {
   GetAppDataRequest,
   GetAppRankingRequest,
 } from '../validation/types';
-import { getLogger } from '../utils/logger';
 import { StoreCountry } from '../types/StoreCountry';
 
 export type Stores = {
-  // eslint-disable-next-line no-unused-vars
   [key in StoreType]: IStore;
 };
 

@@ -15,10 +15,8 @@ import {
 } from '../validation/types/';
 
 import { StoreError } from '../services/StoreService';
-import { getLogger } from '../utils/logger';
 
 export const router = Router();
-const LOGGER = getLogger();
 
 router.get('/:store/suggestions', validate(GetSuggestionsRequestSchema), async (req, res, next) => {
   const data: GetSuggestionsRequest = {
@@ -89,11 +87,12 @@ router.get('/:store/ranking', validate(GetAppRankingRequestSchema), async (req, 
 
   try {
     const ranking = await req.app.services.storeService.getAppRanking(data);
-    return res.status(200).json({ ranking: ranking });
+    return res.status(200).json({ ranking });
   } catch (err: any) {
     switch (err.message) {
       case StoreError.APP_NOT_RANKED:
         next(new HttpError(404, StoreError.APP_NOT_RANKED));
+        break;
       default:
         next(new HttpError(500, 'Internal Server Error'));
         break;

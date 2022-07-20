@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { StoreCountry } from '../types/StoreCountry';
 import { App, AppIdentifier } from '../types/App';
 import { IStore } from './IStore';
