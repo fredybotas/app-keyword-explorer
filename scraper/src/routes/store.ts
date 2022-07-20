@@ -21,7 +21,7 @@ router.get('/:store/suggestions', validate(GetSuggestionsRequestSchema), async (
   };
 
   try {
-    const suggestions = await req.app.services.storeService.getSuggestions(data);
+    const suggestions: string[] = await req.app.services.storeService.getSuggestions(data);
     return res.status(200).json(suggestions);
   } catch (err: any) {
     switch (err.message) {
@@ -56,7 +56,7 @@ router.get('/:store/app/:id', validate(GetAppRequestSchema), async (req, res, ne
 router.get('/:store/search', validate(GetSearchResultRequestSchema), async (req, res, next) => {
   const data: GetSearchResultRequest = {
     storeType: req.params.store,
-    store: req.query.country,
+    storeCountry: req.query.country,
     query: req.query.query,
     collectMetadata: req.query.collectMetadata,
   };

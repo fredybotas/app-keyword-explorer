@@ -22,7 +22,7 @@ export class StoreService {
   constructor(private readonly stores: Stores) {}
 
   private async getSearchResultInternal(request: GetSearchResultRequest): Promise<AppIdentifier[]> {
-    return this.stores[request.storeType].getSearchResult(request.store ?? StoreCountry.us, request.query);
+    return this.stores[request.storeType].getSearchResult(request.storeCountry ?? StoreCountry.us, request.query);
   }
 
   async getApp(request: GetAppDataRequest): Promise<App> {
@@ -71,7 +71,7 @@ export class StoreService {
   }
 
   async getAppRanking(id: string, query: string, store: StoreType, country: StoreCountry): Promise<number> {
-    const searchResults = await this.getSearchResultInternal({ query: query, storeType: store, store: country });
+    const searchResults = await this.getSearchResultInternal({ query: query, storeType: store, storeCountry: country });
     const ranking = searchResults.findIndex((appId: AppIdentifier) => appId === id);
     if (ranking === -1) {
       throw new Error(StoreError.APP_NOT_RANKED);
