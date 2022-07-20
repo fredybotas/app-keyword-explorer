@@ -1,6 +1,9 @@
 import { StoreCountry } from '../types/StoreCountry';
 import { App, AppIdentifier } from '../types/App';
 import { IStore } from './IStore';
+import { getLogger } from '../utils/logger';
+
+const LOGGER = getLogger('APPSTORE');
 
 export class AppleAppStore implements IStore {
   constructor(private readonly client: any) {}
@@ -20,6 +23,7 @@ export class AppleAppStore implements IStore {
       if (err.message === 'App not found (404)') {
         return null;
       }
+      LOGGER.error('Error while fetching app: ' + err.message);
       throw new Error(err.message);
     }
   }
@@ -28,8 +32,9 @@ export class AppleAppStore implements IStore {
     try {
       const suggestions = await this.client.suggest({ term: query });
       return suggestions.map((suggestion: any) => suggestion.term);
-    } catch (message: any) {
-      throw new Error(message);
+    } catch (err: any) {
+      LOGGER.error('Error while getting suggestions: ' + err.message);
+      throw new Error(err.message);
     }
   }
 
@@ -42,8 +47,9 @@ export class AppleAppStore implements IStore {
         idsOnly: true,
       });
       return searchResult;
-    } catch (message: any) {
-      throw new Error(message);
+    } catch (err: any) {
+      LOGGER.error('Error while getting search result: ' + err.message);
+      throw new Error(err.message);
     }
   }
 }
