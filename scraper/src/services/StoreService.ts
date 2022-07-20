@@ -19,7 +19,6 @@ export enum StoreError {
   STORE_FETCH_ERROR = 'store_fetch_error',
 }
 
-const LOGGER = getLogger();
 export class StoreService {
   constructor(private readonly stores: Stores) {}
 
