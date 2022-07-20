@@ -29,6 +29,9 @@ router.get('/:store/suggestions', validate(GetSuggestionsRequestSchema), async (
     return res.status(200).json(suggestions);
   } catch (err: any) {
     switch (err.message) {
+      case StoreError.STORE_FETCH_ERROR:
+        next(new HttpError(503, StoreError.STORE_FETCH_ERROR));
+        break;
       default:
         next(new HttpError(500, 'Internal Server Error'));
         break;
@@ -47,6 +50,9 @@ router.get('/:store/app/:id', validate(GetAppRequestSchema), async (req, res, ne
     return res.status(200).json(app);
   } catch (err: any) {
     switch (err.message) {
+      case StoreError.STORE_FETCH_ERROR:
+        next(new HttpError(503, StoreError.STORE_FETCH_ERROR));
+        break;
       case StoreError.APP_NOT_FOUND:
         next(new HttpError(404, StoreError.APP_NOT_FOUND));
         break;
@@ -70,6 +76,9 @@ router.get('/:store/search', validate(GetSearchResultRequestSchema), async (req,
     return res.status(200).json(app);
   } catch (err: any) {
     switch (err.message) {
+      case StoreError.STORE_FETCH_ERROR:
+        next(new HttpError(503, StoreError.STORE_FETCH_ERROR));
+        break;
       default:
         next(new HttpError(500, 'Internal Server Error'));
         break;
@@ -92,6 +101,9 @@ router.get('/:store/ranking', validate(GetAppRankingRequestSchema), async (req, 
     switch (err.message) {
       case StoreError.APP_NOT_RANKED:
         next(new HttpError(404, StoreError.APP_NOT_RANKED));
+        break;
+      case StoreError.STORE_FETCH_ERROR:
+        next(new HttpError(503, StoreError.STORE_FETCH_ERROR));
         break;
       default:
         next(new HttpError(500, 'Internal Server Error'));
