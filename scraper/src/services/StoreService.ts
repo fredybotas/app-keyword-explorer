@@ -1,7 +1,12 @@
 import { IStore } from '../stores/IStore';
 import { StoreType } from '../types/StoreType';
 import { App, AppIdentifier } from '../types/App';
-import { GetSuggestionsRequest, GetSearchResultRequest, GetAppDataRequest } from '../validation/types';
+import {
+  GetSuggestionsRequest,
+  GetSearchResultRequest,
+  GetAppDataRequest,
+  GetAppRankingRequest,
+} from '../validation/types';
 import { getLogger } from '../utils/logger';
 import { StoreCountry } from '../types/StoreCountry';
 
@@ -35,7 +40,6 @@ export class StoreService {
         case StoreError.APP_NOT_FOUND:
           throw err;
         default:
-          LOGGER.error(err.message);
           throw err;
       }
     }
@@ -68,9 +72,13 @@ export class StoreService {
       });
   }
 
-  async getAppRanking(id: string, query: string, store: StoreType, country: StoreCountry): Promise<number> {
-    const searchResults = await this.getSearchResultInternal({ query: query, storeType: store, storeCountry: country });
-    const ranking = searchResults.findIndex((appId: AppIdentifier) => appId === id);
+  async getAppRanking(data: GetAppRankingRequest): Promise<number> {
+    const searchResults = await this.getSearchResultInternal({
+      query: data.query,
+      storeType: data.storeType,
+      storeCountry: data.storeCountry,
+    });
+    const ranking = searchResults.findIndex((appId: AppIdentifier) => appId === data.appId);
     if (ranking === -1) {
       throw new Error(StoreError.APP_NOT_RANKED);
     }
