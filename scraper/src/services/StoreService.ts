@@ -55,21 +55,17 @@ export class StoreService {
       return searchResultIds.map((appId: AppIdentifier) => ({ id: appId }));
     }
 
-    return Promise.allSettled(
-      searchResultIds.map((id: AppIdentifier): Promise<App | null> => {
-        return this.getApp({ storeType: request.storeType, id: id });
+    const appsFromIds = await Promise.allSettled(
+      searchResultIds.map((id: AppIdentifier): Promise<App> => {
+        return this.getAppInternal({ storeType: request.storeType, id: id });
       }),
-    )
-      .then((promises: PromiseSettledResult<App | null>[]) => {
-        return promises
-          .filter((x): x is PromiseFulfilledResult<App | null> => x.status === 'fulfilled')
-          .map((promise: PromiseFulfilledResult<App | null>) => promise.value);
-      })
-      .then((apps: (App | null)[]): App[] => {
-        return apps.filter((app: App | null): boolean => {
-          return app !== null;
-        }) as App[];
-      });
+    );
+
+    return searchResultIds.map((appId: AppIdentifier, index: number) => {
+      return appsFromIds[index].status === 'fulfilled'
+        ? (appsFromIds[index] as PromiseFulfilledResult<App>).value
+        : { id: appId };
+    });
   }
 
   async getAppRanking(data: GetAppRankingRequest): Promise<number> {
