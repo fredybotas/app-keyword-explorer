@@ -67,7 +67,7 @@ export class StoreService {
 
     const appsFromIds = await Promise.allSettled(
       searchResultIds.map((id: AppIdentifier): Promise<App> => {
-        return this.getAppInternal({ storeType: request.storeType, id: id });
+        return this.getAppInternal({ storeType: request.storeType, id });
       }),
     );
 

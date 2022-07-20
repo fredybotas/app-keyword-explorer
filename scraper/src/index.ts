@@ -17,7 +17,7 @@ const stores: Stores = {
 const storeService: StoreService = new StoreService(stores);
 
 app.services = {
-  storeService: storeService,
+  storeService,
 };
 
 app.use(RequestLoggerMiddleware());
