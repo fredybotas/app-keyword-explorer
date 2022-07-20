@@ -23,6 +23,9 @@ export const schema = {
         type: 'string',
         enum: Object.values(StoreCountry),
       },
+      collectMetadata: {
+        type: 'boolean',
+      },
     },
     required: ['query'],
     additionalProperties: false,

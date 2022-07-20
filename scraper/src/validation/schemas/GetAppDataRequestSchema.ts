@@ -5,7 +5,7 @@ export const schema = {
     type: 'object',
     properties: {
       id: {
-        type: 'number',
+        type: 'string',
       },
       store: {
         type: 'string',

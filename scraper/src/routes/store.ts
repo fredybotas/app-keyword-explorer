@@ -58,6 +58,7 @@ router.get('/:store/search', validate(GetSearchResultRequestSchema), async (req,
     storeType: req.params.store,
     store: req.query.country,
     query: req.query.query,
+    collectMetadata: req.query.collectMetadata,
   };
 
   try {

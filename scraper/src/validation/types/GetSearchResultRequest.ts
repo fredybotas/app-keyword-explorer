@@ -5,4 +5,5 @@ export interface GetSearchResultRequest {
   query: string;
   store?: StoreCountry;
   storeType: StoreType;
+  collectMetadata?: boolean;
 }

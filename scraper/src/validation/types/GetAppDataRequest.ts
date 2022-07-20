@@ -1,6 +1,6 @@
 import { StoreType } from '../../types/StoreType';
 
 export interface GetAppDataRequest {
-  id: number;
+  id: string;
   storeType: StoreType;
 }

@@ -1,6 +1,6 @@
 import { Store } from '../stores/Store';
 import { StoreType } from '../types/StoreType';
-import { App } from '../types/App';
+import { App, AppIdentifier } from '../types/App';
 import { GetAppDataRequest } from '../validation/types/GetAppDataRequest';
 import { GetSuggestionsRequest } from '../validation/types/GetSuggestionsRequest';
 import { GetSearchResultRequest } from '../validation/types/GetSearchResultRequest';
@@ -20,6 +20,10 @@ export enum StoreError {
 const LOGGER = getLogger();
 export class StoreService {
   constructor(private readonly stores: Stores) {}
+
+  private async getSearchResultInternal(request: GetSearchResultRequest): Promise<AppIdentifier[]> {
+    return this.stores[request.storeType].getSearchResult(request.store ?? StoreCountry.us, request.query);
+  }
 
   async getApp(request: GetAppDataRequest): Promise<App> {
     try {
@@ -44,12 +48,31 @@ export class StoreService {
   }
 
   async getSearchResult(request: GetSearchResultRequest): Promise<App[]> {
-    return this.stores[request.storeType].getSearchResult(request.store ?? StoreCountry.us, request.query);
+    const searchResultIds = await this.getSearchResultInternal(request);
+    if (request.collectMetadata === undefined || request.collectMetadata === false) {
+      return searchResultIds.map((appId: AppIdentifier) => ({ id: appId }));
+    }
+
+    return Promise.allSettled(
+      searchResultIds.map((id: AppIdentifier): Promise<App | null> => {
+        return this.getApp({ storeType: request.storeType, id: id });
+      }),
+    )
+      .then((promises: PromiseSettledResult<App | null>[]) => {
+        return promises
+          .filter((x): x is PromiseFulfilledResult<App | null> => x.status === 'fulfilled')
+          .map((promise: PromiseFulfilledResult<App | null>) => promise.value);
+      })
+      .then((apps: (App | null)[]): App[] => {
+        return apps.filter((app: App | null): boolean => {
+          return app !== null;
+        }) as App[];
+      });
   }
 
-  async getAppRanking(id: number, query: string, store: StoreType, country: StoreCountry): Promise<number> {
-    const searchResults = await this.getSearchResult({ query: query, storeType: store, store: country });
-    const ranking = searchResults.findIndex((app) => app.id === id);
+  async getAppRanking(id: string, query: string, store: StoreType, country: StoreCountry): Promise<number> {
+    const searchResults = await this.getSearchResultInternal({ query: query, storeType: store, store: country });
+    const ranking = searchResults.findIndex((appId: AppIdentifier) => appId === id);
     if (ranking === -1) {
       throw new Error(StoreError.APP_NOT_RANKED);
     }

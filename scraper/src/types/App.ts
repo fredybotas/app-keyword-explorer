@@ -1,7 +1,11 @@
+export type AppIdentifier = string;
 export interface App {
-  id: number;
+  id: AppIdentifier;
+  metadata?: AppMetadata;
+}
+
+interface AppMetadata {
   name: string;
   appId: string;
-  subtitle?: string;
   description: string;
 }

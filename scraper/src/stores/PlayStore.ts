@@ -1,9 +1,9 @@
 import { StoreCountry } from '../types/StoreCountry';
-import { App } from '../types/App';
+import { App, AppIdentifier } from '../types/App';
 import { Store } from '../stores/Store';
 
 export class GooglePlayStore implements Store {
-  getApp(id: number): Promise<App | null> {
+  getApp(id: string): Promise<App | null> {
     throw new Error('Method not implemented.');
   }
 
@@ -11,7 +11,7 @@ export class GooglePlayStore implements Store {
     throw new Error('Method not implemented.');
   }
 
-  getSearchResult(store: StoreCountry, query: string): Promise<App[]> {
+  getSearchResult(store: StoreCountry, query: string): Promise<AppIdentifier[]> {
     throw new Error('Method not implemented.');
   }
 }

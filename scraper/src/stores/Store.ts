@@ -1,8 +1,8 @@
 import { StoreCountry } from '../types/StoreCountry';
-import { App } from '../types/App';
+import { App, AppIdentifier } from '../types/App';
 
 export interface Store {
-  getApp: (id: number) => Promise<App | null>;
+  getApp: (id: string) => Promise<App | null>;
   getSuggestions: (query: string) => Promise<string[]>;
-  getSearchResult: (store: StoreCountry, query: string) => Promise<App[]>;
+  getSearchResult: (store: StoreCountry, query: string) => Promise<AppIdentifier[]>;
 }
