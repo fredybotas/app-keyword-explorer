@@ -1,8 +1,8 @@
 import { StoreCountry } from '../types/StoreCountry';
 import { App, AppIdentifier } from '../types/App';
-import { Store } from '../stores/Store';
+import { IStore } from './IStore';
 
-export class AppleAppStore implements Store {
+export class AppleAppStore implements IStore {
   constructor(private readonly client: any) {}
 
   async getApp(id: string): Promise<App | null> {

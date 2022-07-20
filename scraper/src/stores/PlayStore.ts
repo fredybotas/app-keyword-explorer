@@ -1,8 +1,8 @@
 import { StoreCountry } from '../types/StoreCountry';
 import { App, AppIdentifier } from '../types/App';
-import { Store } from '../stores/Store';
+import { IStore } from './IStore';
 
-export class GooglePlayStore implements Store {
+export class GooglePlayStore implements IStore {
   getApp(id: string): Promise<App | null> {
     throw new Error('Method not implemented.');
   }

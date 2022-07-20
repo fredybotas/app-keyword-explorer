@@ -1,4 +1,4 @@
-import { Store } from '../stores/Store';
+import { IStore } from '../stores/IStore';
 import { StoreType } from '../types/StoreType';
 import { App, AppIdentifier } from '../types/App';
 import { GetSuggestionsRequest, GetSearchResultRequest, GetAppDataRequest } from '../validation/types';
@@ -7,7 +7,7 @@ import { StoreCountry } from '../types/StoreCountry';
 
 export type Stores = {
   // eslint-disable-next-line no-unused-vars
-  [key in StoreType]: Store;
+  [key in StoreType]: IStore;
 };
 
 export enum StoreError {
