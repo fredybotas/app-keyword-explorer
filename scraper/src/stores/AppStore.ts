@@ -2,11 +2,21 @@ import { StoreCountry } from '../types/StoreCountry';
 import { App, AppIdentifier } from '../types/App';
 import { IStore } from './IStore';
 import { getLogger } from '../utils/logger';
+import { ReviewSortCriteria, Review } from '../types/Review';
 
 const LOGGER = getLogger('APPSTORE');
 
 export class AppleAppStore implements IStore {
   constructor(private readonly client: any) {}
+
+  private reviewSortCriteriaToLibType(sortedBy: ReviewSortCriteria): any {
+    switch (sortedBy) {
+      case ReviewSortCriteria.RECENT:
+        return this.client.sort.RECENT;
+      case ReviewSortCriteria.HELPFUL:
+        return this.client.sort.HELPFUL;
+    }
+  }
 
   async getApp(id: string): Promise<App | null> {
     try {
@@ -49,6 +59,27 @@ export class AppleAppStore implements IStore {
       return searchResult;
     } catch (err: any) {
       LOGGER.error('Error while getting search result: ' + err.message);
+      throw new Error(err.message);
+    }
+  }
+
+  async getReviews(id: string, store: StoreCountry, sortedBy: ReviewSortCriteria, page: number): Promise<Review[]> {
+    try {
+      const reviewPage = await this.client.reviews({
+        id,
+        country: store,
+        page,
+        sort: this.reviewSortCriteriaToLibType(sortedBy),
+      });
+      return reviewPage.map((review: any) => {
+        return {
+          title: review.title,
+          content: review.text,
+          rating: review.score,
+        };
+      });
+    } catch (err: any) {
+      LOGGER.error('Error while getting reviews: ' + err.message);
       throw new Error(err.message);
     }
   }

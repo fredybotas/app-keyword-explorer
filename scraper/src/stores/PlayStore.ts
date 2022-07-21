@@ -2,6 +2,7 @@
 import { StoreCountry } from '../types/StoreCountry';
 import { App, AppIdentifier } from '../types/App';
 import { IStore } from './IStore';
+import { ReviewSortCriteria, Review } from '../types/Review';
 
 export class GooglePlayStore implements IStore {
   getApp(id: string): Promise<App | null> {
@@ -13,6 +14,10 @@ export class GooglePlayStore implements IStore {
   }
 
   getSearchResult(store: StoreCountry, query: string): Promise<AppIdentifier[]> {
+    throw new Error('Method not implemented.');
+  }
+
+  getReviews(id: string, store: StoreCountry, sortedBy: ReviewSortCriteria, page: number): Promise<Review[]> {
     throw new Error('Method not implemented.');
   }
 }
