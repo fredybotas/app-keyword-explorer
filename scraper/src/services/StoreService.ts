@@ -1,11 +1,13 @@
 import { IStore } from '../stores/IStore';
 import { StoreType } from '../types/StoreType';
 import { App, AppIdentifier } from '../types/App';
+import { Review, ReviewSortCriteria } from '../types/Review';
 import {
   GetSuggestionsRequest,
   GetSearchResultRequest,
   GetAppDataRequest,
   GetAppRankingRequest,
+  GetReviewsRequest,
 } from '../validation/types';
 import { StoreCountry } from '../types/StoreCountry';
 
@@ -21,6 +23,7 @@ export enum StoreError {
 
 export class StoreService {
   constructor(private readonly stores: Stores) {}
+  private MAX_REVIEW_PAGE = 10;
 
   private async getSearchResultInternal(request: GetSearchResultRequest): Promise<AppIdentifier[]> {
     try {
@@ -89,5 +92,26 @@ export class StoreService {
       throw new Error(StoreError.APP_NOT_RANKED);
     }
     return ranking + 1;
+  }
+
+  async getReviews(data: GetReviewsRequest): Promise<Review[]> {
+    // check if app exists, otherwise throw error
+    await this.getAppInternal({ storeType: data.storeType, id: data.appId });
+
+    try {
+      const reviews: Review[] = [];
+      for (let page: number = 1; page <= this.MAX_REVIEW_PAGE; ++page) {
+        const reviewPage = await this.stores[data.storeType].getReviews(
+          data.appId,
+          data.storeCountry ?? StoreCountry.us,
+          data.criteria ?? ReviewSortCriteria.RECENT,
+          page,
+        );
+        reviews.push(...reviewPage);
+      }
+      return reviews;
+    } catch (err: any) {
+      throw new Error(StoreError.STORE_FETCH_ERROR);
+    }
   }
 }

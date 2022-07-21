@@ -4,7 +4,7 @@ export interface Review {
   rating: number;
 }
 
-export const enum ReviewSortCriteria {
+export enum ReviewSortCriteria {
   RECENT = 'recent',
   HELPFUL = 'helpful',
 }

@@ -6,12 +6,14 @@ import {
   GetSuggestionsRequestSchema,
   GetSearchResultRequestSchema,
   GetAppRankingRequestSchema,
+  GetReviewsRequestSchema,
 } from '../validation/schemas';
 import {
   GetAppDataRequest,
   GetSuggestionsRequest,
   GetSearchResultRequest,
   GetAppRankingRequest,
+  GetReviewsRequest,
 } from '../validation/types/';
 
 import { StoreError } from '../services/StoreService';
@@ -47,6 +49,32 @@ router.get('/:store/app/:id', validate(GetAppRequestSchema), async (req, res, ne
 
   try {
     const app = await req.app.services.storeService.getApp(data);
+    return res.status(200).json(app);
+  } catch (err: any) {
+    switch (err.message) {
+      case StoreError.STORE_FETCH_ERROR:
+        next(new HttpError(503, StoreError.STORE_FETCH_ERROR));
+        break;
+      case StoreError.APP_NOT_FOUND:
+        next(new HttpError(404, StoreError.APP_NOT_FOUND));
+        break;
+      default:
+        next(new HttpError(500, 'Internal Server Error'));
+        break;
+    }
+  }
+});
+
+router.get('/:store/reviews/:id', validate(GetReviewsRequestSchema), async (req, res, next) => {
+  const data: GetReviewsRequest = {
+    storeType: req.params.store,
+    appId: req.params.id,
+    criteria: req.query.criteria,
+    storeCountry: req.query.country,
+  };
+
+  try {
+    const app = await req.app.services.storeService.getReviews(data);
     return res.status(200).json(app);
   } catch (err: any) {
     switch (err.message) {
