@@ -22,8 +22,9 @@ export enum StoreError {
 }
 
 export class StoreService {
+  private readonly MAX_REVIEW_PAGE = 10;
+
   constructor(private readonly stores: Stores) {}
-  private MAX_REVIEW_PAGE = 10;
 
   private async getSearchResultInternal(request: GetSearchResultRequest): Promise<AppIdentifier[]> {
     try {
