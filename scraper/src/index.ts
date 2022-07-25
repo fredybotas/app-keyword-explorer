@@ -5,13 +5,19 @@ import { Stores, StoreService } from './services/StoreService';
 import { AppleAppStore, GooglePlayStore } from './stores';
 import { router as storeRouter } from './routes/store';
 import { ErrorHandleMiddleware, NotFoundMiddleware, RequestLoggerMiddleware } from './middlewares/';
+import { createClient } from 'redis';
+import { CachedStoreProxy } from './stores/CachedProxyStore';
+import { Cache, RedisClient } from './utils/cache';
 
 const app = express();
 const port = 3000;
 
+const cacheClient: RedisClient = createClient();
+const cache = new Cache(cacheClient);
+
 const appStoreClient = require('app-store-scraper');
 const stores: Stores = {
-  appstore: new AppleAppStore(appStoreClient),
+  appstore: new CachedStoreProxy('APPSTORE', new AppleAppStore(appStoreClient), cache),
   playstore: new GooglePlayStore(),
 };
 const storeService: StoreService = new StoreService(stores);
