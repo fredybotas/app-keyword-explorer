@@ -114,9 +114,9 @@ router.get('/:store/search', validate(GetSearchResultRequestSchema), async (req,
   }
 });
 
-router.get('/:store/ranking', validate(GetAppRankingRequestSchema), async (req, res, next) => {
+router.get('/:store/ranking/:id', validate(GetAppRankingRequestSchema), async (req, res, next) => {
   const data: GetAppRankingRequest = {
-    appId: req.query.appId,
+    appId: req.params.id,
     storeType: req.params.store,
     storeCountry: req.query.country,
     query: req.query.query,

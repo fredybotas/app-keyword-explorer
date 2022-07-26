@@ -5,12 +5,15 @@ export const schema = {
   params: {
     type: 'object',
     properties: {
+      id: {
+        type: 'string',
+      },
       store: {
         type: 'string',
         enum: Object.values(StoreType),
       },
     },
-    required: ['store'],
+    required: ['store', 'id'],
     additionalProperties: false,
   },
   query: {
@@ -23,11 +26,8 @@ export const schema = {
         type: 'string',
         enum: Object.values(StoreCountry),
       },
-      appId: {
-        type: 'string',
-      },
     },
-    required: ['query', 'appId'],
+    required: ['query'],
     additionalProperties: false,
   },
 };
