@@ -105,7 +105,7 @@ export class StoreService {
         const reviewPage = await this.stores[data.storeType].getReviews(
           data.appId,
           data.storeCountry ?? StoreCountry.us,
-          data.criteria ?? ReviewSortCriteria.RECENT,
+          data.criteria ?? ReviewSortCriteria.HELPFUL,
           page,
         );
         reviews.push(...reviewPage);
