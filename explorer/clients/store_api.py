@@ -15,6 +15,9 @@ class StoreApiClient:
             return App(id=id, metadata=AppMetadata(**res.json()["metadata"]))
         return None
 
+    def get_apps(self, ids: List[str]) -> List[Optional[App]]:
+        return [self.get_app(id) for id in ids]
+
     def get_suggestions(self, query: str) -> List[str]:
         res = requests.get(f"{self.base_url}/suggestions", params={"query": query})
         if res.status_code == 200:
@@ -62,7 +65,7 @@ class StoreApiClient:
         if country is not None:
             params["country"] = country.value
         res = requests.get(f"{self.base_url}/search", params=params)
-        if res.raise_for_status() == 200:
+        if res.status_code == 200:
             return [
                 App(
                     id=el["id"],
