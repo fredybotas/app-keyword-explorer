@@ -8,6 +8,7 @@ import { ErrorHandleMiddleware, NotFoundMiddleware, RequestLoggerMiddleware } fr
 import { createClient } from 'redis';
 import { CachedStoreProxy } from './stores/CachedProxyStore';
 import { Cache, RedisClient } from './utils/cache';
+import { RateLimitingProxyStore } from './stores/RateLimitingProxyStore';
 
 const app = express();
 const port = 3000;
@@ -17,7 +18,7 @@ const cache = new Cache(cacheClient);
 
 const appStoreClient = require('app-store-scraper');
 const stores: Stores = {
-  appstore: new CachedStoreProxy('APPSTORE', new AppleAppStore(appStoreClient), cache),
+  appstore: new CachedStoreProxy('APPSTORE', new RateLimitingProxyStore(new AppleAppStore(appStoreClient), 20), cache),
   playstore: new GooglePlayStore(),
 };
 const storeService: StoreService = new StoreService(stores);
