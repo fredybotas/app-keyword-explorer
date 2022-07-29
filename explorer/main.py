@@ -7,7 +7,11 @@ from augmenters import (
     StoreSuggestionsKeywordAugmenter,
     GloveKeywordAugmenter,
 )
-from processors import DeduplicatorProcessor, SpacyLemmatizerProcessor
+from processors import (
+    DeduplicatorProcessor,
+    SpacyLemmatizerProcessor,
+    ContentBasedRelevancyProcessor,
+)
 from pipeline import ProcessingPipeline
 
 kw_extractor = YakeKeywordExtractor()
@@ -25,12 +29,13 @@ pipeline = ProcessingPipeline(
         GloveKeywordAugmenter(),
         SpacyLemmatizerProcessor(),
         DeduplicatorProcessor(),
+        ContentBasedRelevancyProcessor(["1207472156", "1095569891"], client),
     ]
 )
 pipeline.perform()
 
 print(len(pipeline.keywords))
-print(pipeline.keywords)
+print(*pipeline.keywords, sep="\n")
 
 # print(client.get_app("1497031062"))
 # print(client.get_suggestions("game"))

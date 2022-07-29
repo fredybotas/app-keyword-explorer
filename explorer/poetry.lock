@@ -85,6 +85,18 @@ optional = false
 python-versions = "*"
 
 [[package]]
+name = "fasttext"
+version = "0.9.2"
+description = "fasttext Python bindings"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+numpy = "*"
+pybind11 = ">=2.2"
+
+[[package]]
 name = "flake8"
 version = "4.0.1"
 description = "the modular source code checker: pep8 pyflakes and co"
@@ -272,6 +284,17 @@ python-versions = "*"
 [package.dependencies]
 cymem = ">=2.0.2,<2.1.0"
 murmurhash = ">=0.28.0,<1.1.0"
+
+[[package]]
+name = "pybind11"
+version = "2.10.0"
+description = "Seamless operability between C++11 and Python"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[package.extras]
+global = ["pybind11-global (==2.10.0)"]
 
 [[package]]
 name = "pycodestyle"
@@ -610,7 +633,7 @@ resolved_reference = "4f82feb2dfcf1a313621ecf6e4b2eeda6035d73c"
 [metadata]
 lock-version = "1.1"
 python-versions = "3.10"
-content-hash = "a7ff4d40b156d05f332af183d893c582a3c15e77d6dcad4495eb3f262a683d8e"
+content-hash = "87e1186bfb7262aa0edcb2ef9594c67a93e301aa6219d5f0f353a5331ab17585"
 
 [metadata.files]
 black = []
@@ -621,6 +644,7 @@ charset-normalizer = []
 click = []
 colorama = []
 cymem = []
+fasttext = []
 flake8 = []
 gensim = []
 idna = []
@@ -638,6 +662,7 @@ pathspec = []
 pathy = []
 platformdirs = []
 preshed = []
+pybind11 = []
 pycodestyle = []
 pydantic = []
 pyflakes = []
