@@ -5,10 +5,10 @@ from augmenters import (
     AppMetadataKeywordAugmenter,
     AppReviewsKeywordAugmenter,
     StoreSuggestionsKeywordAugmenter,
+    GloveKeywordAugmenter,
 )
 from processors import DeduplicatorProcessor, SpacyLemmatizerProcessor
 from pipeline import ProcessingPipeline
-
 
 kw_extractor = YakeKeywordExtractor()
 client = StoreApiClient(Stores.APPSTORE, "localhost:3000")
@@ -22,10 +22,14 @@ pipeline = ProcessingPipeline(
         StoreSuggestionsKeywordAugmenter(client, kw_extractor),
         SpacyLemmatizerProcessor(),
         DeduplicatorProcessor(),
+        GloveKeywordAugmenter(),
+        SpacyLemmatizerProcessor(),
+        DeduplicatorProcessor(),
     ]
 )
 pipeline.perform()
 
+print(len(pipeline.keywords))
 print(pipeline.keywords)
 
 # print(client.get_app("1497031062"))

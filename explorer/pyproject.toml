@@ -5,10 +5,11 @@ description = ""
 authors = ["Michal Manak <fredybotas@gmail.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = "3.10"
 requests = "^2.28.1"
 yake = {git = "https://github.com/LIAAD/yake"}
 spacy = "^3.4.1"
+gensim = "^4.2.0"
 
 [tool.poetry.dev-dependencies]
 black = "^22.6.0"

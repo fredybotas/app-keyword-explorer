@@ -98,6 +98,25 @@ pycodestyle = ">=2.8.0,<2.9.0"
 pyflakes = ">=2.4.0,<2.5.0"
 
 [[package]]
+name = "gensim"
+version = "4.2.0"
+description = "Python framework for fast Vector Space Modelling"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[package.dependencies]
+numpy = ">=1.17.0"
+scipy = ">=0.18.1"
+smart-open = ">=1.8.1"
+
+[package.extras]
+distributed = ["Pyro4 (>=4.27)"]
+docs = ["pytest", "pytest-cov", "mock", "cython", "testfixtures", "pyemd", "nmslib", "Pyro4 (>=4.27)", "visdom (>0.1.8.7)", "sphinx", "sphinx-gallery", "sphinxcontrib.programoutput", "sphinxcontrib-napoleon", "matplotlib", "memory-profiler", "annoy", "pyro4", "nltk", "statsmodels", "pandas"]
+test = ["pytest", "pytest-cov", "mock", "cython", "testfixtures", "pyemd", "nmslib", "visdom (>0.1.8.7)"]
+test-win = ["pytest", "pytest-cov", "mock", "cython", "testfixtures", "pyemd", "nmslib"]
+
+[[package]]
 name = "idna"
 version = "3.3"
 description = "Internationalized Domain Names in Applications (IDNA)"
@@ -321,6 +340,17 @@ urllib3 = ">=1.21.1,<1.27"
 [package.extras]
 socks = ["PySocks (>=1.5.6,!=1.5.7)"]
 use_chardet_on_py3 = ["chardet (>=3.0.2,<6)"]
+
+[[package]]
+name = "scipy"
+version = "1.8.1"
+description = "SciPy: Scientific Library for Python"
+category = "main"
+optional = false
+python-versions = ">=3.8,<3.11"
+
+[package.dependencies]
+numpy = ">=1.17.3,<1.25.0"
 
 [[package]]
 name = "segtok"
@@ -579,8 +609,8 @@ resolved_reference = "4f82feb2dfcf1a313621ecf6e4b2eeda6035d73c"
 
 [metadata]
 lock-version = "1.1"
-python-versions = "^3.10"
-content-hash = "494769f44dcb7afd9408779e23a4e94b29cce46c80a3de020a2e85010124d29e"
+python-versions = "3.10"
+content-hash = "a7ff4d40b156d05f332af183d893c582a3c15e77d6dcad4495eb3f262a683d8e"
 
 [metadata.files]
 black = []
@@ -592,6 +622,7 @@ click = []
 colorama = []
 cymem = []
 flake8 = []
+gensim = []
 idna = []
 jellyfish = []
 jinja2 = []
@@ -613,6 +644,7 @@ pyflakes = []
 pyparsing = []
 regex = []
 requests = []
+scipy = []
 segtok = []
 smart-open = []
 spacy = []
