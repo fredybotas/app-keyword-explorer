@@ -6,7 +6,7 @@ from gensim import parsing
 
 
 class GloveKeywordAugmenter(KeywordAugmenter):
-    def __init__(self, k: int = 5) -> None:
+    def __init__(self, k: int = 3) -> None:
         self.k = k
         self.model = gensim.downloader.load("glove-wiki-gigaword-50")
         self.stop_words = parsing.preprocessing.STOPWORDS

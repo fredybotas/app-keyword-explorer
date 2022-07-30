@@ -35,7 +35,9 @@ pipeline = ProcessingPipeline(
 pipeline.perform()
 
 print(len(pipeline.keywords))
-print(*pipeline.keywords, sep="\n")
+with open("keywords.txt", "w") as file:
+    file.write("\n".join([kw.__repr__() for kw in pipeline.keywords]))
+
 
 # print(client.get_app("1497031062"))
 # print(client.get_suggestions("game"))
