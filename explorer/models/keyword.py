@@ -14,7 +14,7 @@ class KeywordSource(enum.Enum):
 class Keyword:
     value: str
     source: List[KeywordSource]
-    relevancy: Optional[int] = None
+    relevancy: Optional[float] = None
 
     def __repr__(self) -> str:
         return f"Keyword({self.value}, src={[v.value for v in self.source]}, rel={self.relevancy})"

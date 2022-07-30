@@ -1,6 +1,7 @@
 from .processor import KeywordProcessor
 from typing import List
 from models import Keyword
+from utils import Ranker, Score
 from clients import StoreApiClient
 import fasttext
 from scipy.spatial import distance
@@ -25,8 +26,19 @@ class ContentBasedRelevancyProcessor(KeywordProcessor):
                 app_base_text += app.metadata.description
 
         base_vector = self.model.get_sentence_vector(app_base_text.replace("\n", " "))
+        cosine_rank = []
+        euclidean_rank = []
         for kw in keywords:
             kw_vector = self.model.get_sentence_vector(kw.value)
-            kw.relevancy = distance.cosine(kw_vector, base_vector)
+            cosine_rank.append(distance.cosine(kw_vector, base_vector))
+            euclidean_rank.append(distance.euclidean(kw_vector, base_vector))
+
+        rank_arr = Ranker().rank(
+            Score(cosine_rank, reverse=True), Score(euclidean_rank, reverse=True)
+        )
+
+        for rank, kw in zip(rank_arr, keywords):
+            kw.relevancy = rank
+
         keywords.sort(key=lambda x: x.relevancy, reverse=False)
         return keywords
