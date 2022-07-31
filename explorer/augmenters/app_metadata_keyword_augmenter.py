@@ -1,6 +1,6 @@
 from clients import StoreApiClient
 from keywords import KeywordExtractor
-from models import Keyword, KeywordSource
+from models import Keyword, KeywordSource, KeywordSourceType
 
 from .augmenter import KeywordAugmenter
 from typing import List
@@ -20,11 +20,17 @@ class AppMetadataKeywordAugmenter(KeywordAugmenter):
         for app in apps:
             if app.metadata is not None:
                 result += [
-                    Keyword(value=val, source=[KeywordSource.METADATA])
+                    Keyword(
+                        value=val,
+                        source=[KeywordSource(type=KeywordSourceType.METADATA)],
+                    )
                     for val in self.extractor.extract(app.metadata.name)
                 ]
                 result += [
-                    Keyword(value=val, source=[KeywordSource.METADATA])
+                    Keyword(
+                        value=val,
+                        source=[KeywordSource(type=KeywordSourceType.METADATA)],
+                    )
                     for val in self.extractor.extract(app.metadata.description)
                 ]
         return result

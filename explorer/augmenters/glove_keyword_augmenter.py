@@ -1,5 +1,5 @@
 from .augmenter import KeywordAugmenter
-from models import Keyword, KeywordSource
+from models import Keyword, KeywordSource, KeywordSourceType
 from typing import List
 import gensim.downloader
 from gensim import parsing
@@ -24,7 +24,10 @@ class GloveKeywordAugmenter(KeywordAugmenter):
             augmented_kw = [kw for kw in augmented_kw if kw != keyword.value]
             augmented_kw = [kw for kw in augmented_kw if kw not in self.stop_words]
             augmented_kw = [
-                Keyword(value=kw, source=[KeywordSource.LANGUAGE_MODEL])
+                Keyword(
+                    value=kw,
+                    source=[KeywordSource(type=KeywordSourceType.LANGUAGE_MODEL)],
+                )
                 for kw in augmented_kw
             ]
             result += augmented_kw

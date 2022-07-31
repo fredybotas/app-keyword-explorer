@@ -1,13 +1,21 @@
 from dataclasses import dataclass
+import dataclasses
 import enum
+import json
 from typing import List, Optional
 
 
-class KeywordSource(enum.Enum):
+class KeywordSourceType(str, enum.Enum):
     METADATA = "metadata"
     REVIEWS = "reviews"
     SUGGESTIONS = "suggestions"
     LANGUAGE_MODEL = "model"
+
+
+@dataclass
+class KeywordSource:
+    type: KeywordSourceType
+    occurences_count: int = 1
 
 
 @dataclass
@@ -17,4 +25,4 @@ class Keyword:
     relevancy: Optional[float] = None
 
     def __repr__(self) -> str:
-        return f"Keyword({self.value}, src={[v.value for v in self.source]}, rel={self.relevancy})"
+        return json.dumps(dataclasses.asdict(self))

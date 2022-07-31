@@ -1,6 +1,6 @@
 from clients import StoreApiClient
 from keywords import KeywordExtractor
-from models import StoreCountry, Keyword, KeywordSource
+from models import StoreCountry, Keyword, KeywordSource, KeywordSourceType
 from .augmenter import KeywordAugmenter
 from typing import List
 
@@ -31,14 +31,14 @@ class AppReviewsKeywordAugmenter(KeywordAugmenter):
                 result += [
                     Keyword(
                         value=val,
-                        source=[KeywordSource.REVIEWS],
+                        source=[KeywordSource(type=KeywordSourceType.REVIEWS)],
                     )
                     for val in self.extractor.extract(review.content)
                 ]
                 result += [
                     Keyword(
                         value=val,
-                        source=[KeywordSource.REVIEWS],
+                        source=[KeywordSource(type=KeywordSourceType.REVIEWS)],
                     )
                     for val in self.extractor.extract(review.title)
                 ]

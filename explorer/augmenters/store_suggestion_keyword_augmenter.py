@@ -2,7 +2,7 @@ from .augmenter import KeywordAugmenter
 from typing import List
 from clients import StoreApiClient
 from keywords import KeywordExtractor
-from models import StoreCountry, Keyword, KeywordSource
+from models import StoreCountry, Keyword, KeywordSource, KeywordSourceType
 
 
 class StoreSuggestionsKeywordAugmenter(KeywordAugmenter):
@@ -24,7 +24,10 @@ class StoreSuggestionsKeywordAugmenter(KeywordAugmenter):
                 for suggestion in self.apiClient.get_suggestions(keyword.value)
             ]
             suggestions = [
-                Keyword(value=item, source=[KeywordSource.SUGGESTIONS])
+                Keyword(
+                    value=item,
+                    source=[KeywordSource(type=KeywordSourceType.SUGGESTIONS)],
+                )
                 for sublist in suggestions
                 for item in sublist
             ]
