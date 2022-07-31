@@ -37,15 +37,3 @@ pipeline.perform()
 print(len(pipeline.keywords))
 with open("keywords.txt", "w") as file:
     file.write("\n".join([kw.__repr__() for kw in pipeline.keywords]))
-
-
-# print(client.get_app("1497031062"))
-# print(client.get_suggestions("game"))
-# print(
-#     client.get_reviews(
-#         "1615840757", country=StoreCountry.SK, sortCriteria=ReviewSortCriteria.HELPFUL
-#     )
-# )
-# print(client.get_ranking("1615840757", "word games unlimited", StoreCountry.SK))
-# print(client.get_search_result("word games unlimited", StoreCountry.SK, metadata=True))
-# print(client.get_search_result("word games unlimited", StoreCountry.SK))

@@ -21,8 +21,6 @@ class Ranker:
     def rank(self, scores_l: Score, scores_r: Score) -> List[float]:
         indexes_l = self._rank_elements(scores_l)
         indexes_r = self._rank_elements(scores_r)
-        print(indexes_l)
-        print(indexes_r)
         result = []
         for rank_l, rank_r in zip(indexes_l, indexes_r):
             result.append(
