@@ -2,7 +2,7 @@ from dataclasses import dataclass
 import dataclasses
 import enum
 import json
-from typing import List, Optional
+from typing import List, Optional, Dict
 
 
 class KeywordSourceType(str, enum.Enum):
@@ -22,6 +22,7 @@ class KeywordSource:
 class Keyword:
     value: str
     source: List[KeywordSource]
+    app_ranking: Dict[str, int] = None
     relevancy: Optional[float] = None
 
     def __repr__(self) -> str:

@@ -11,16 +11,17 @@ from processors import (
     DeduplicatorProcessor,
     SpacyLemmatizerProcessor,
     ContentBasedRelevancyProcessor,
+    StoreRankingProcessor,
 )
 from pipeline import ProcessingPipeline
 
 kw_extractor = YakeKeywordExtractor()
 client = StoreApiClient(Stores.APPSTORE, "localhost:3000")
-
+apps = ["1207472156", "1095569891"]
 pipeline = ProcessingPipeline(
     [
-        AppMetadataKeywordAugmenter(["1207472156", "1095569891"], client, kw_extractor),
-        AppReviewsKeywordAugmenter(["1207472156", "1095569891"], client, kw_extractor),
+        AppMetadataKeywordAugmenter(apps, client, kw_extractor),
+        AppReviewsKeywordAugmenter(apps, client, kw_extractor),
         SpacyLemmatizerProcessor(),
         DeduplicatorProcessor(),
         StoreSuggestionsKeywordAugmenter(client, kw_extractor),
@@ -29,7 +30,8 @@ pipeline = ProcessingPipeline(
         GloveKeywordAugmenter(),
         SpacyLemmatizerProcessor(),
         DeduplicatorProcessor(),
-        ContentBasedRelevancyProcessor(["1207472156", "1095569891"], client),
+        ContentBasedRelevancyProcessor(apps, client),
+        StoreRankingProcessor(apps, client),
     ]
 )
 pipeline.perform()
