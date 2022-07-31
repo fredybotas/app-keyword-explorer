@@ -24,12 +24,13 @@ def test_deduplicator_same_sources():
     kws = [
         Keyword("a", source=[KeywordSource(KeywordSourceType.LANGUAGE_MODEL)]),
         Keyword("a", source=[KeywordSource(KeywordSourceType.LANGUAGE_MODEL)]),
+        Keyword("a", source=[KeywordSource(KeywordSourceType.LANGUAGE_MODEL)]),
     ]
     assert sut.process(kws) == [
         Keyword(
             "a",
             source=[
-                KeywordSource(KeywordSourceType.LANGUAGE_MODEL, occurences_count=2)
+                KeywordSource(KeywordSourceType.LANGUAGE_MODEL, occurences_count=3)
             ],
         )
     ]
