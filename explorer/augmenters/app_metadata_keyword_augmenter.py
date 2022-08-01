@@ -18,7 +18,7 @@ class AppMetadataKeywordAugmenter(KeywordAugmenter):
         result: List[Keyword] = []
         apps = self.apiClient.get_apps(self.appIds)
         for app in apps:
-            if app.metadata is not None:
+            if app is not None and app.metadata is not None:
                 result += [
                     Keyword(
                         value=val,
