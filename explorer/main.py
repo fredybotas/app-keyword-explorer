@@ -31,7 +31,7 @@ pipeline = ProcessingPipeline(
         SpacyLemmatizerProcessor(),
         DeduplicatorProcessor(),
         ContentBasedRelevancyProcessor(apps, client),
-        StoreRankingProcessor(apps, client),
+        StoreRankingProcessor(apps, client, limit=2000),
     ]
 )
 pipeline.perform()
