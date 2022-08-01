@@ -12,12 +12,26 @@ from processors import (
     SpacyLemmatizerProcessor,
     ContentBasedRelevancyProcessor,
     StoreRankingProcessor,
+    RankingProcessor,
+    RankingCriteria,
 )
 from pipeline import ProcessingPipeline
+import datetime
 
 kw_extractor = YakeKeywordExtractor()
 client = StoreApiClient(Stores.APPSTORE, "localhost:3000")
-apps = ["1207472156", "1095569891"]
+apps = [
+    "1602799021",
+    "1603978681",
+    "1095569891",
+    "1257539184",
+    "1453351862",
+    "1369521645",
+    "1207472156",
+    "1245180154",
+    "1269460400",
+    "1483222663",
+]
 pipeline = ProcessingPipeline(
     [
         AppMetadataKeywordAugmenter(apps, client, kw_extractor),
@@ -31,11 +45,20 @@ pipeline = ProcessingPipeline(
         SpacyLemmatizerProcessor(),
         DeduplicatorProcessor(),
         ContentBasedRelevancyProcessor(apps, client),
-        StoreRankingProcessor(apps, client, limit=2000),
+        RankingProcessor(
+            RankingCriteria.OCCURENCE_COUNT, RankingCriteria.RELEVANCY_RANK
+        ),
+        StoreRankingProcessor(apps, client, limit=3000),
+        RankingProcessor(
+            RankingCriteria.STORE_RANKING,
+            RankingCriteria.OCCURENCE_COUNT,
+            RankingCriteria.RELEVANCY_RANK,
+        ),
     ]
 )
 pipeline.perform()
 
 print(len(pipeline.keywords))
-with open("keywords.txt", "w") as file:
-    file.write("\n".join([kw.__repr__() for kw in pipeline.keywords]))
+current_datetime = datetime.datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
+with open(f"keywords_{current_datetime}.json", "w") as file:
+    file.write("[" + ",\n".join([kw.__repr__() for kw in pipeline.keywords]) + "]")

@@ -38,5 +38,4 @@ class ContentBasedRelevancyProcessor(KeywordProcessor):
         for rank, kw in zip(rank_arr, keywords):
             kw.relevancy = rank
 
-        keywords.sort(key=lambda x: x.relevancy, reverse=False)
         return keywords

@@ -11,6 +11,7 @@ yake = {git = "https://github.com/LIAAD/yake"}
 spacy = "^3.4.1"
 gensim = "^4.2.0"
 fasttext = "^0.9.2"
+tqdm = "^4.64.0"
 
 [tool.poetry.dev-dependencies]
 black = "^22.6.0"
