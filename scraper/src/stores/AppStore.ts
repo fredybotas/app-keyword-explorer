@@ -33,8 +33,10 @@ export class AppleAppStore implements IStore {
       if (err.message === 'App not found (404)') {
         return null;
       }
-      LOGGER.error('Error while fetching app: ' + err.message);
-      throw new Error(err.message);
+      LOGGER.error(
+        'Error while fetching app: code:' + err.response.statusCode + ' message:' + err.response.statusMessage,
+      );
+      throw new Error(err.response.statusMessage);
     }
   }
 
@@ -43,8 +45,10 @@ export class AppleAppStore implements IStore {
       const suggestions = await this.client.suggest({ term: query });
       return suggestions.map((suggestion: any) => suggestion.term);
     } catch (err: any) {
-      LOGGER.error('Error while getting suggestions: ' + err.message);
-      throw new Error(err.message);
+      LOGGER.error(
+        'Error while getting suggestions: ' + err.response.statusCode + ' message: ' + err.response.statusMessage,
+      );
+      throw new Error(err.response.statusMessage);
     }
   }
 
@@ -58,8 +62,10 @@ export class AppleAppStore implements IStore {
       });
       return searchResult;
     } catch (err: any) {
-      LOGGER.error('Error while getting search result: ' + err.message);
-      throw new Error(err.message);
+      LOGGER.error(
+        'Error while getting search result: ' + err.response.statusCode + ' message: ' + err.response.statusMessage,
+      );
+      throw new Error(err.response.statusMessage);
     }
   }
 
@@ -79,8 +85,10 @@ export class AppleAppStore implements IStore {
         };
       });
     } catch (err: any) {
-      LOGGER.error('Error while getting reviews: ' + err.message);
-      throw new Error(err.message);
+      LOGGER.error(
+        'Error while getting reviews: ' + err.response.statusCode + ' message: ' + err.response.statusMessage,
+      );
+      throw new Error(err.response.statusMessage);
     }
   }
 }

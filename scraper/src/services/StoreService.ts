@@ -28,7 +28,10 @@ export class StoreService {
 
   private async getSearchResultInternal(request: GetSearchResultRequest): Promise<AppIdentifier[]> {
     try {
-      return this.stores[request.storeType].getSearchResult(request.storeCountry ?? StoreCountry.us, request.query);
+      return await this.stores[request.storeType].getSearchResult(
+        request.storeCountry ?? StoreCountry.us,
+        request.query,
+      );
     } catch (err: any) {
       throw new Error(StoreError.STORE_FETCH_ERROR);
     }
@@ -57,7 +60,7 @@ export class StoreService {
 
   async getSuggestions(request: GetSuggestionsRequest): Promise<string[]> {
     try {
-      return this.stores[request.storeType].getSuggestions(request.query);
+      return await this.stores[request.storeType].getSuggestions(request.query);
     } catch (err: any) {
       throw new Error(StoreError.STORE_FETCH_ERROR);
     }
