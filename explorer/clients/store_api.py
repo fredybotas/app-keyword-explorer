@@ -54,6 +54,8 @@ class StoreApiClient:
         res = requests.get(f"{self.base_url}/ranking/{id}", params=params)
         if res.status_code == 200:
             return res.json()["ranking"]
+        if res.status_code >= 500:
+            res.raise_for_status()
         return None
 
     def get_search_result(
