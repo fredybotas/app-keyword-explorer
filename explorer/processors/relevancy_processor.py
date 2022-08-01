@@ -33,9 +33,7 @@ class ContentBasedRelevancyProcessor(KeywordProcessor):
             cosine_rank.append(distance.cosine(kw_vector, base_vector))
             euclidean_rank.append(distance.euclidean(kw_vector, base_vector))
 
-        rank_arr = Ranker().rank(
-            Score(cosine_rank, reverse=True), Score(euclidean_rank, reverse=True)
-        )
+        rank_arr = Ranker().rank(Score(cosine_rank), Score(euclidean_rank))
 
         for rank, kw in zip(rank_arr, keywords):
             kw.relevancy = rank
