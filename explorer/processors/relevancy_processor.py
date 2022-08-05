@@ -29,9 +29,13 @@ class ContentBasedRelevancyProcessor(KeywordProcessor):
         cosine_rank = []
         euclidean_rank = []
         for kw in keywords:
-            kw_vector = self.model.get_sentence_vector(kw.value)
-            cosine_rank.append(distance.cosine(kw_vector, base_vector))
-            euclidean_rank.append(distance.euclidean(kw_vector, base_vector))
+            if kw.value in app_base_text:
+                cosine_rank.append(0)
+                euclidean_rank.append(0)
+            else:
+                kw_vector = self.model.get_sentence_vector(kw.value)
+                cosine_rank.append(distance.cosine(kw_vector, base_vector))
+                euclidean_rank.append(distance.euclidean(kw_vector, base_vector))
 
         rank_arr = Ranker().rank(Score(cosine_rank), Score(euclidean_rank))
 

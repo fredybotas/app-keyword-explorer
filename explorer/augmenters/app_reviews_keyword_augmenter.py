@@ -6,7 +6,7 @@ from typing import List
 
 
 class AppReviewsKeywordAugmenter(KeywordAugmenter):
-    TOP_N_REVIEWS = 40
+    TOP_N_REVIEWS = 100
     RATING_THRESHOLD = 3
 
     def __init__(

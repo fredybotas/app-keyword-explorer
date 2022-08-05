@@ -26,6 +26,7 @@ class RankingProcessor(KeywordProcessor):
                         for kw in keywords
                     ],
                     reverse=True,
+                    weight=3.0,
                 )
             case RankingCriteria.RELEVANCY_RANK:
                 return Score([kw.relevancy for kw in keywords])
@@ -36,7 +37,7 @@ class RankingProcessor(KeywordProcessor):
                         for kw in keywords
                     ],
                     reverse=True,
-                    weight=2.0,
+                    weight=4.0,
                 )
             case _:
                 pass

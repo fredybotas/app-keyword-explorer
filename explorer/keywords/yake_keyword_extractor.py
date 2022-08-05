@@ -11,7 +11,7 @@ class YakeKeywordExtractor(KeywordExtractor):
         dedupLim: float = 0.9,
         dedupFunc: str = "seqm",
         windowsSize: int = 1,
-        top: int = 10,
+        top: int = 40,
         features: None = None,
     ):
         self.extractor = yake.KeywordExtractor(
