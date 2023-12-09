@@ -8,7 +8,17 @@ import { ListCollection } from '../types/ListCollection';
 
 export class FakeStore implements IStore {
   async getApp(id: string): Promise<App | null> {
-    const app: App = { id, metadata: { name: 'a', appId: 'b', description: 'desc' } };
+    const app: App = {
+      id,
+      metadata: {
+        name: 'a',
+        appId: 'b',
+        description: 'desc',
+        releaseDate: new Date(),
+        ratingsCount: 1,
+        averageRating: 5.0,
+      },
+    };
     return app;
   }
 

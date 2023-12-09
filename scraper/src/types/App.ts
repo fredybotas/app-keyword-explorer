@@ -4,6 +4,9 @@ interface AppMetadata {
   name: string;
   appId: string;
   description: string;
+  releaseDate: Date;
+  ratingsCount: number;
+  averageRating: number;
 }
 
 export interface App {

@@ -37,6 +37,9 @@ export class AppleAppStore implements IStore {
           name: appData.title,
           appId: appData.appId,
           description: appData.description,
+          releaseDate: new Date(appData.released),
+          ratingsCount: appData.reviews,
+          averageRating: appData.score,
         },
       };
     } catch (err: any) {
