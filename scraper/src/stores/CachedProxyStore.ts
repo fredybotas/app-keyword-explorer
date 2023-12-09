@@ -3,6 +3,8 @@ import { ReviewSortCriteria, Review } from '../types/Review';
 import { StoreCountry } from '../types/StoreCountry';
 import { IStore } from './IStore';
 import { Cache } from '../utils/cache';
+import { ListCategory } from '../types/ListCategory';
+import { ListCollection } from '../types/ListCollection';
 
 export class CachedStoreProxy implements IStore {
   constructor(private readonly key: string, private readonly store: IStore, private readonly cache: Cache) {}
@@ -31,6 +33,12 @@ export class CachedStoreProxy implements IStore {
     return this.cache.cacheProxy<string[]>(() => {
       return this.store.getSearchResult(store, query);
     }, this.getKey(this.getSearchResult.name, store, query));
+  }
+
+  async getListResult(store: StoreCountry, category: ListCategory, collection: ListCollection): Promise<string[]> {
+    return this.cache.cacheProxy<string[]>(() => {
+      return this.store.getListResult(store, category, collection);
+    }, this.getKey(this.getListResult.name, store, category, collection));
   }
 
   async getReviews(id: string, store: StoreCountry, sortedBy: ReviewSortCriteria, page: number): Promise<Review[]> {

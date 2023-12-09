@@ -3,6 +3,7 @@ import { schema as GetSuggestionsRequestSchema } from './GetSuggestionsRequestSc
 import { schema as GetSearchResultRequestSchema } from './GetSearchResultRequestSchema';
 import { schema as GetAppRankingRequestSchema } from './GetAppRankingRequestSchema';
 import { schema as GetReviewsRequestSchema } from './GetReviewsRequestSchema';
+import { schema as GetListRequestSchema } from './GetListRequestSchema';
 
 export {
   GetReviewsRequestSchema,
@@ -10,4 +11,5 @@ export {
   GetSuggestionsRequestSchema,
   GetSearchResultRequestSchema,
   GetAppRankingRequestSchema,
+  GetListRequestSchema,
 };

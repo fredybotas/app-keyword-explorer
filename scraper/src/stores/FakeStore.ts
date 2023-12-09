@@ -1,8 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import { ListCategory } from '../types/ListCategory';
 import { App } from '../types/App';
 import { ReviewSortCriteria, Review } from '../types/Review';
 import { StoreCountry } from '../types/StoreCountry';
 import { IStore } from './IStore';
+import { ListCollection } from '../types/ListCollection';
 
 export class FakeStore implements IStore {
   async getApp(id: string): Promise<App | null> {
@@ -25,5 +27,9 @@ export class FakeStore implements IStore {
       { title: 'test_review3', content: 'c', rating: 2 },
       { title: 'test_review4', content: 'd', rating: 3 },
     ];
+  }
+
+  async getListResult(store: StoreCountry, category: ListCategory, collection: ListCollection): Promise<string[]> {
+    return ['1207472156', '1095569891'];
   }
 }

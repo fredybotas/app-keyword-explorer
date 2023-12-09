@@ -7,6 +7,7 @@ import {
   GetSearchResultRequestSchema,
   GetAppRankingRequestSchema,
   GetReviewsRequestSchema,
+  GetListRequestSchema,
 } from '../validation/schemas';
 import {
   GetAppDataRequest,
@@ -14,6 +15,7 @@ import {
   GetSearchResultRequest,
   GetAppRankingRequest,
   GetReviewsRequest,
+  GetListRequest,
 } from '../validation/types/';
 
 import { StoreError } from '../services/StoreService';
@@ -101,6 +103,30 @@ router.get('/:store/search', validate(GetSearchResultRequestSchema), async (req,
 
   try {
     const app = await req.app.services.storeService.getSearchResult(data);
+    return res.status(200).json(app);
+  } catch (err: any) {
+    switch (err.message) {
+      case StoreError.STORE_FETCH_ERROR:
+        next(new HttpError(503, StoreError.STORE_FETCH_ERROR));
+        break;
+      default:
+        next(new HttpError(500, 'Internal Server Error'));
+        break;
+    }
+  }
+});
+
+router.get('/:store/list', validate(GetListRequestSchema), async (req, res, next) => {
+  const data: GetListRequest = {
+    storeType: req.params.store,
+    category: req.query.category,
+    collection: req.query.collection,
+    storeCountry: req.query.country,
+    collectMetadata: req.query.collectMetadata,
+  };
+
+  try {
+    const app = await req.app.services.storeService.getListResult(data);
     return res.status(200).json(app);
   } catch (err: any) {
     switch (err.message) {

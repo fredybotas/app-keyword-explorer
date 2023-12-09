@@ -3,6 +3,8 @@ import { App, AppIdentifier } from '../types/App';
 import { IStore } from './IStore';
 import { getLogger } from '../utils/logger';
 import { ReviewSortCriteria, Review } from '../types/Review';
+import { ListCategory } from '../types/ListCategory';
+import { ListCollection } from '../types/ListCollection';
 
 const LOGGER = getLogger('APPSTORE');
 
@@ -16,6 +18,14 @@ export class AppleAppStore implements IStore {
       case ReviewSortCriteria.HELPFUL:
         return this.client.sort.HELPFUL;
     }
+  }
+
+  private listCategoryToLibType(category: ListCategory): any {
+    return this.client.category[category];
+  }
+
+  private listCollectionToLibType(collection: ListCollection): any {
+    return this.client.collection[collection];
   }
 
   async getApp(id: string): Promise<App | null> {
@@ -64,6 +74,24 @@ export class AppleAppStore implements IStore {
     } catch (err: any) {
       LOGGER.error(
         'Error while getting search result: ' + err.response.statusCode + ' message: ' + err.response.statusMessage,
+      );
+      throw new Error(err.response.statusMessage);
+    }
+  }
+
+  async getListResult(store: StoreCountry, category: ListCategory, collection: ListCollection): Promise<string[]> {
+    try {
+      const listResult = await this.client.list({
+        category: this.listCategoryToLibType(category),
+        collection: this.listCollectionToLibType(collection),
+        country: store,
+        num: 200,
+        fullDetail: false,
+      });
+      return listResult.map((app: any) => app.id);
+    } catch (err: any) {
+      LOGGER.error(
+        'Error while getting list result: ' + err.response.statusCode + ' message: ' + err.response.statusMessage,
       );
       throw new Error(err.response.statusMessage);
     }

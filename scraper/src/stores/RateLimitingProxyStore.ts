@@ -1,7 +1,9 @@
+import { ListCategory } from '../types/ListCategory';
 import { App } from '../types/App';
 import { ReviewSortCriteria, Review } from '../types/Review';
 import { StoreCountry } from '../types/StoreCountry';
 import { IStore } from './IStore';
+import { ListCollection } from '../types/ListCollection';
 
 export class RateLimitingProxyStore implements IStore {
   private lastScheduledRequest = Date.now();
@@ -40,6 +42,10 @@ export class RateLimitingProxyStore implements IStore {
 
   async getSearchResult(store: StoreCountry, query: string): Promise<string[]> {
     return this.scheduleRequest<string[]>(() => this.store.getSearchResult(store, query));
+  }
+
+  async getListResult(store: StoreCountry, category: ListCategory, collection: ListCollection): Promise<string[]> {
+    return this.scheduleRequest<string[]>(() => this.store.getListResult(store, category, collection));
   }
 
   async getReviews(id: string, store: StoreCountry, sortedBy: ReviewSortCriteria, page: number): Promise<Review[]> {

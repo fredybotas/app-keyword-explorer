@@ -8,6 +8,7 @@ import {
   GetAppDataRequest,
   GetAppRankingRequest,
   GetReviewsRequest,
+  GetListRequest,
 } from '../validation/types';
 import { StoreCountry } from '../types/StoreCountry';
 
@@ -31,6 +32,18 @@ export class StoreService {
       return await this.stores[request.storeType].getSearchResult(
         request.storeCountry ?? StoreCountry.us,
         request.query,
+      );
+    } catch (err: any) {
+      throw new Error(StoreError.STORE_FETCH_ERROR);
+    }
+  }
+
+  private async getListResultInternal(request: GetListRequest): Promise<AppIdentifier[]> {
+    try {
+      return await this.stores[request.storeType].getListResult(
+        request.storeCountry ?? StoreCountry.us,
+        request.category,
+        request.collection,
       );
     } catch (err: any) {
       throw new Error(StoreError.STORE_FETCH_ERROR);
@@ -66,23 +79,36 @@ export class StoreService {
     }
   }
 
-  async getSearchResult(request: GetSearchResultRequest): Promise<App[]> {
-    const searchResultIds = await this.getSearchResultInternal(request);
-    if (request.collectMetadata === undefined || request.collectMetadata === false) {
-      return searchResultIds.map((appId: AppIdentifier) => ({ id: appId }));
+  private async fillMetadataIfRequired(
+    collectMetadata: any,
+    results: AppIdentifier[],
+    storeType: StoreType,
+  ): Promise<App[]> {
+    if (collectMetadata === undefined || collectMetadata === false) {
+      return results.map((appId: AppIdentifier) => ({ id: appId }));
     }
 
     const appsFromIds = await Promise.allSettled(
-      searchResultIds.map((id: AppIdentifier): Promise<App> => {
-        return this.getAppInternal({ storeType: request.storeType, id });
+      results.map((id: AppIdentifier): Promise<App> => {
+        return this.getAppInternal({ storeType, id });
       }),
     );
 
-    return searchResultIds.map((appId: AppIdentifier, index: number) => {
+    return results.map((appId: AppIdentifier, index: number) => {
       return appsFromIds[index].status === 'fulfilled'
         ? (appsFromIds[index] as PromiseFulfilledResult<App>).value
         : { id: appId };
     });
+  }
+
+  async getSearchResult(request: GetSearchResultRequest): Promise<App[]> {
+    const searchResultIds = await this.getSearchResultInternal(request);
+    return this.fillMetadataIfRequired(request.collectMetadata, searchResultIds, request.storeType);
+  }
+
+  async getListResult(request: GetListRequest): Promise<App[]> {
+    const listResultIds = await this.getListResultInternal(request);
+    return this.fillMetadataIfRequired(request.collectMetadata, listResultIds, request.storeType);
   }
 
   async getAppRanking(data: GetAppRankingRequest): Promise<number> {
