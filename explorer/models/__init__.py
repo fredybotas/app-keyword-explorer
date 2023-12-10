@@ -1,5 +1,5 @@
 from .app import App, AppMetadata
-from .stores import Stores, StoreCountry
+from .stores import Stores, StoreCountry, ListCategory, ListCollection
 from .review import Review, ReviewSortCriteria
 from .keyword import Keyword, KeywordSource, KeywordSourceType
 
@@ -13,4 +13,6 @@ __all__ = [
     "Review",
     "StoreCountry",
     "ReviewSortCriteria",
+    "ListCategory",
+    "ListCollection",
 ]

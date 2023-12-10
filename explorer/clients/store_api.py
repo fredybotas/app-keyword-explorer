@@ -1,6 +1,15 @@
 import requests
 
-from models import Stores, App, AppMetadata, Review, StoreCountry, ReviewSortCriteria
+from models import (
+    Stores,
+    App,
+    AppMetadata,
+    Review,
+    StoreCountry,
+    ReviewSortCriteria,
+    ListCollection,
+    ListCategory,
+)
 from typing import Optional, List
 
 
@@ -67,6 +76,32 @@ class StoreApiClient:
         if country is not None:
             params["country"] = country.value
         res = requests.get(f"{self.base_url}/search", params=params)
+        if res.status_code == 200:
+            return [
+                App(
+                    id=el["id"],
+                    metadata=(
+                        AppMetadata(**el["metadata"]) if "metadata" in el else None
+                    ),
+                )
+                for el in res.json()
+            ]
+        return None
+
+    def get_list_result(
+        self,
+        category: ListCategory,
+        collection: ListCollection,
+        country: Optional[StoreCountry] = None,
+        metadata: bool = False,
+    ) -> List[App]:
+        params = {}
+        params["category"] = category.value
+        params["collection"] = collection.value
+        params["collectMetadata"] = "true" if metadata else "false"
+        if country is not None:
+            params["country"] = country.value
+        res = requests.get(f"{self.base_url}/list", params=params)
         if res.status_code == 200:
             return [
                 App(
