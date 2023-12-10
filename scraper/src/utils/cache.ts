@@ -6,7 +6,7 @@ export type RedisClient = ReturnType<typeof createClient>;
 const LOGGER = getLogger('CACHE');
 
 export class Cache {
-  private readonly TTL = 3600; // 60min
+  private readonly TTL = 3600 * 24; // 60min
 
   constructor(private readonly cacheClient: RedisClient) {
     cacheClient.on('connect', () => {

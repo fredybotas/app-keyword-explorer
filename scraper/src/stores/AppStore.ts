@@ -30,6 +30,7 @@ export class AppleAppStore implements IStore {
 
   async getApp(id: string): Promise<App | null> {
     try {
+      LOGGER.info('Fetching app with id:' + id);
       const appData = await this.client.app({ id });
       return {
         id,

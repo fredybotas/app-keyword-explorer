@@ -33,7 +33,7 @@ export class RateLimitingProxyStore implements IStore {
   }
 
   async getApp(id: string): Promise<App | null> {
-    return this.store.getApp(id);
+    return this.scheduleRequest<App | null>(() => this.store.getApp(id));
   }
 
   async getSuggestions(query: string): Promise<string[]> {
